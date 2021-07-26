@@ -33,6 +33,7 @@ private[dynamodb] class TableIndexConnector(tableName: String, indexName: String
 
     private val consistentRead = parameters.getOrElse("stronglyConsistentReads", "false").toBoolean
     private val filterPushdown = parameters.getOrElse("filterPushdown", "true").toBoolean
+    private val endpoint = parameters.get("endpoint")
     private val region = parameters.get("region")
     private val roleArn = parameters.get("roleArn")
     private val providerClassName = parameters.get("providerclassname")
@@ -40,7 +41,7 @@ private[dynamodb] class TableIndexConnector(tableName: String, indexName: String
     override val filterPushdownEnabled: Boolean = filterPushdown
 
     override val (keySchema, readLimit, itemLimit, totalSegments) = {
-        val table = getDynamoDB(region, roleArn, providerClassName).getTable(tableName)
+        val table = getDynamoDB(region, endpoint, roleArn, providerClassName).getTable(tableName)
         val indexDesc = table.describe().getGlobalSecondaryIndexes.asScala.find(_.getIndexName == indexName).get
 
         // Key schema.

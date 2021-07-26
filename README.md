@@ -97,8 +97,11 @@ The following parameters can be set as options on the Spark reader object before
 
 The following parameters can be set as options on the Spark writer object before saving.
 
-- `writeBatchSize` number of items to send per call to DynamoDB BatchWriteItem. Default 25.
+- `writeBatchSize` number of items to send per call to DynamoDB BatchWriteItem. Default 25, if over 25 an issue might be raised.
 - `targetCapacity` fraction of provisioned write capacity on the table to consume for writing or updating. Default 1 (i.e. 100% capacity).
+- `region` AWS region to use when saving. Default is the us east.
+- `endpoint` AWS endpoint to use when saving. Default is the us east.
+- `defaultparallelism` Parallelism to write to DynamoDB, need to match the write dataframe's number of partitions to reach full throughput. Default spark.default.parallelism.
 - `update` if true items will be written using UpdateItem on keys rather than BatchWriteItem. Default false.
 - `throughput` the desired write throughput to use. It overwrites any calculation used by the package. It is intended to be used with tables that are on-demand. Defaults to 100 for on-demand.
 - `inferSchema` if false will not automatically infer schema - this is useful when writing to a table with many columns
