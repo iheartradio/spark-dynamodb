@@ -47,9 +47,6 @@ private[dynamodb] class TableConnector(tableName: String, parallelism: Int, para
     override val filterPushdownEnabled: Boolean = filterPushdown
 
     override val (keySchema, readLimit, writeLimit, itemLimit, totalSegments) = {
-        println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        println(region, endpoint, roleArn, providerClassName, awsAccessKeyId, awsSecretKeyId)
-        println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         val table = getDynamoDB(region, endpoint, roleArn, providerClassName, awsAccessKeyId, awsSecretKeyId).getTable(tableName)
         val desc = table.describe()
 
