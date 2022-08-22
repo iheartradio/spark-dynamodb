@@ -83,6 +83,8 @@ pyspark --packages com.audienceproject:spark-dynamodb_<spark-scala-version>:<ver
 The following parameters can be set as options on the Spark reader and writer object before loading/saving.
 - `region` sets the region where the dynamodb table. Default is environment specific.
 - `roleArn` sets an IAM role to assume. This allows for access to a DynamoDB in a different account than the Spark cluster. Defaults to the standard role configuration.
+- `awsaccesskeyid` sets the aws access key for auth and choosing account (yes, awsaccesskeyid is all lower case)
+- `awssecretkeyid` sets the aws secret key id for auth and choosing account (yes, awssecretkeyid is all lower case)
 
 The following parameters can be set as options on the Spark reader object before loading.
 
@@ -110,8 +112,6 @@ The following parameters can be set as options on the Spark writer object before
 The following Java system properties are available for configuration.
 
 - `aws.profile` IAM profile to use for default credentials provider.
-- `aws.dynamodb.region` region in which to access the AWS APIs.
-- `aws.dynamodb.endpoint` endpoint to use for accessing the DynamoDB API.
 - `aws.sts.endpoint` endpoint to use for accessing the STS API when assuming the role indicated by the `roleArn` parameter.
 
 ## Acknowledgements
