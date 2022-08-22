@@ -37,11 +37,14 @@ private[dynamodb] class TableIndexConnector(tableName: String, indexName: String
     private val region = parameters.get("region")
     private val roleArn = parameters.get("roleArn")
     private val providerClassName = parameters.get("providerclassname")
+    private val awsAccessKeyId = parameters.get("awsaccesskeyid")
+    private val awsSecretKeyId = parameters.get("awssecretkeyid")
 
     override val filterPushdownEnabled: Boolean = filterPushdown
 
     override val (keySchema, readLimit, itemLimit, totalSegments) = {
-        val table = getDynamoDB(region, endpoint, roleArn, providerClassName).getTable(tableName)
+        val table = getDynamoDB(region, endpoint, roleArn, providerClassName, awsAccessKeyId, awsSecretKeyId)
+            .getTable(tableName)
         val indexDesc = table.describe().getGlobalSecondaryIndexes.asScala.find(_.getIndexName == indexName).get
 
         // Key schema.
@@ -98,7 +101,14 @@ private[dynamodb] class TableIndexConnector(tableName: String, indexName: String
             scanSpec.withExpressionSpec(xspec.buildForScan())
         }
 
-        getDynamoDB(region, roleArn, providerClassName).getTable(tableName).getIndex(indexName).scan(scanSpec)
+        getDynamoDB(
+            region,
+            endpoint = endpoint,
+            roleArn = roleArn,
+            providerClassName = providerClassName,
+            awsAccessKeyId = awsAccessKeyId,
+            awsSecretKeyId = awsSecretKeyId
+        ).getTable(tableName).getIndex(indexName).scan(scanSpec)
     }
 
 }
